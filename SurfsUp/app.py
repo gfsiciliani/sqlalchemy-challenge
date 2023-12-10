@@ -3,7 +3,7 @@ from flask import Flask, jsonify
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 import datetime as dt
 
 #################################################
@@ -113,10 +113,49 @@ def tobs():
 
     return jsonify(tobsall)
 
+
+# 5.1
+@app.route("/api/v1.0/<start>")
+def start(start):
+
+    # Query tobs data greater than or equal to start date
+    sel = [func.min(Measurement.tobs),
+           func.avg(Measurement.tobs),
+           func.max(Measurement.tobs)
+    ]
+    
+    query = session.query(*sel).filter(Measurement.date >= start).all()
+    ls = [
+        {"TMIN": query[0][0]},
+        {"TAVG": query[0][1]},
+        {"TMAX": query[0][2]}
+    ]
+
+    return jsonify(ls)
     
 
+# 5.2
+@app.route("/api/v1.0/<start>/<end>")
+def start_end(start, end):
+    
+    # Query tobs data greater than or equal to start date
+    sel = [func.min(Measurement.tobs),
+           func.avg(Measurement.tobs),
+           func.max(Measurement.tobs)
+    ]
+
+    query = session.query(*sel).filter(Measurement.date.between(start,end)).all()
+    
+    ls = [
+        {"TMIN": query[0][0]},
+        {"TAVG": query[0][1]},
+        {"TMAX": query[0][2]}
+    ]
+    
+    return jsonify(ls)
+
 # ///
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
 
 print('''
