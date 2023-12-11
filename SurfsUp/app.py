@@ -40,12 +40,12 @@ def home():
     print("Server received request for 'Home' page...")
     return (
         "HAWAII API<br>"
-        f"Available Routes:<br>"
-        f"/api/v1.0/precipitation<br>"
-        f"/api/v1.0/stations<br>"
-        f"/api/v1.0/tobs<br>"
-        f"/api/v1.0/<start><br>"
-        f"/api/v1.0/<start>/<end>"
+        "Available Routes:<br>"
+        "/api/v1.0/precipitation<br>"
+        "/api/v1.0/stations<br>"
+        "/api/v1.0/tobs<br>"
+        "/api/v1.0/&lt;start&gt;<br>"
+        "/api/v1.0/&lt;start&gt;/&lt;end&gt;"
     )
 
 # precip endpoint
